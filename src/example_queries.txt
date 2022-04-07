@@ -1,0 +1,139 @@
+/// test batch request using zip code
+
+query = """
+query {
+  search(
+    filter: {
+      address: { 
+        postal_code : """ + f"""{z}""" + """\n
+      }
+    }
+  ) {
+    places {
+      results (first:5 after: "10") {
+        edges {
+          node {
+            safegraph_core {
+              location_name
+              placekey
+              latitude
+              longitude
+              street_address
+              city
+              region
+              postal_code
+              iso_country_code
+              brands {
+                brand_id
+                brand_name
+              }
+            }
+            safegraph_geometry {
+              polygon_wkt
+              polygon_class
+              includes_parking_lot
+              is_synthetic
+              enclosed
+            }
+          }
+        }
+        }
+    }
+  }
+}
+"""
+
+
+
+//example from monthly_patterns (input placekey)
+
+"""query {
+          lookup(placekey: """ + f""" "{placekey}" """+ """ ) {
+            monthly_patterns (start_date: "2022-02-01", end_date: "2022-02-28") {
+              placekey
+              location_name
+              street_address
+              city
+              region
+              postal_code
+              brands {
+                brand_id
+                brand_name
+              }
+              date_range_start
+              date_range_end
+              raw_visit_counts
+              raw_visitor_counts
+              visits_by_day
+              poi_cbg
+              popularity_by_hour
+              visitor_home_cbgs
+              visitor_home_aggregation
+              visitor_daytime_cbgs
+              visitor_country_of_origin
+              distance_from_home
+              bucketed_dwell_times
+              median_dwell
+            }
+          }
+        }
+    """
+
+
+
+//example call to core places using a placekey:
+
+
+query = """
+query {
+  lookup(placekey: "222-224@5vg-7gr-6kz") {
+    placekey
+    safegraph_core {
+      location_name
+      street_address
+      city
+      region
+      postal_code
+      iso_country_code
+    }
+  }
+}
+"""
+// with a date
+query = """
+query($date: DateTime){
+    search( filter: {
+        address: {
+            city: "San Francisco"
+            region: "CA"
+        }
+    }) {
+        weekly_patterns (date: $date){
+          location_name
+          raw_visit_counts
+        }
+    }
+}
+"""
+
+
+
+// THIS DOES NOT WORK
+query {
+  lookup(
+    query: {
+      city: "Irvine"
+      region: "CA"
+      iso_country_code: "US"
+    }
+  ) {
+    placekey
+    safegraph_core {
+      location_name
+      street_address
+      postal_code
+      phone_number
+      category_tags
+    }
+  }
+}
