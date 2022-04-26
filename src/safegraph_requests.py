@@ -1,5 +1,6 @@
-
 from typing import Any
+from typing import Dict
+from typing import List 
 
 import os
 from dotenv import load_dotenv
@@ -63,7 +64,7 @@ def make_places_query(zip_code : str) -> str:
     return(q)
 
 
-def places_resp_to_dataframe(resp: dict[str,Any]) -> pd.DataFrame:
+def places_resp_to_dataframe(resp: Dict[str,Any]) -> pd.DataFrame:
     
     dfs = []
     for i in resp["data"]["search"]["places"]["results"]["edges"]:
@@ -103,16 +104,16 @@ def make_patterns_query(placekey : str, start_date: str, end_date: str) -> str:
     return(q)
 
 
-def get_placekey_list(resp: dict[str,Any]) -> list:
+def get_placekey_list(resp: Dict[str,Any]) -> List[str]:
     
-    placekeys: list = []
+    placekeys: List = []
     for i in resp["data"]["search"]["places"]["results"]["edges"]:
         placekeys.append(i["node"]["safegraph_core"]["placekey"])
     return placekeys
     
 
 def patterns_resp_to_dataframe(
-    placekey_list: list,
+    placekey_list: List[str],
     start_date: str,
     end_date: str,
 ) -> pd.DataFrame:
@@ -137,8 +138,8 @@ def patterns_resp_to_dataframe(
 
 def make_safegraph_request(
     query: str,
-    variables: dict[str,Any] = None
-) -> dict[Any]:
+    variables: Dict[str,Any] = None
+) -> Dict[Any]:
     
     headers = {
         'Content-Type': 'application/json',
