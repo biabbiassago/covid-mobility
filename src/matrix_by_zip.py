@@ -1,4 +1,6 @@
 from typing import Any
+from typing import Dict
+from typing import List
 
 import os
 from dotenv import load_dotenv
@@ -19,7 +21,7 @@ API_KEY = os.getenv('SAFEGRAPH_API_KEY')
 
 
 
-def places_resp_to_dataframe(resp: dict[str,Any]) -> pd.DataFrame:
+def places_resp_to_dataframe(resp: Dict[str,Any]) -> pd.DataFrame:
     
     dfs = []
     for i in resp["data"]["search"]["places"]["results"]["edges"]:
@@ -37,7 +39,7 @@ def make_cbgs_matrix(patterns: pd.DataFrame) -> pd.DataFrame :
     #agg_mat = agg_mat.groupby(agg_mat.columns,axis=0).sum()
     return agg_mat
 
-def make_zip_out_visits(patterns: pd.DataFrame, zip_code: str, oc_codes: list[int], lookup_dict) -> pd.DataFrame:
+def make_zip_out_visits(patterns: pd.DataFrame, zip_code: str, oc_codes: List[int], lookup_dict) -> pd.DataFrame:
     
     mat = pd.json_normalize(patterns.visitor_home_cbgs)
     mat = mat.set_index([patterns.poi_cbg,patterns.date_range_start])
@@ -62,7 +64,7 @@ def make_zip_out_visits(patterns: pd.DataFrame, zip_code: str, oc_codes: list[in
     
     return out_matrix
 
-def get_places_for_zip(zip_code: str) -> list:
+def get_places_for_zip(zip_code: str) -> List:
     
     query = make_places_query(zip_code)
     resp = make_safegraph_request(query)

@@ -1,4 +1,6 @@
 from typing import Any
+from typing import List
+from typing import Dict
 
 import json
 import numpy as np
@@ -10,7 +12,7 @@ from functools import reduce
 
 # Zip-Tract - for 1st quarter of 2020 (downloaded 04-15-2022)
 
-def get_oc_zips() -> list[int] : 
+def get_oc_zips() -> List[int] : 
     oc_zip_codes = pd.read_csv(
         "data/oc_covid_data_zip_weekly.csv",
         usecols=["zip"]
@@ -18,7 +20,7 @@ def get_oc_zips() -> list[int] :
     
     return oc_zip_codes
 
-def make_lookup_dict(oc_zip_codes: np.array) -> dict[int,int]:
+def make_lookup_dict(oc_zip_codes: np.array) -> Dict[int,int]:
     
     full_table = pd.read_csv("data/full_zip_tract_conversion.csv",
                              usecols=["ZIP","TRACT"]).rename(
@@ -29,7 +31,7 @@ def make_lookup_dict(oc_zip_codes: np.array) -> dict[int,int]:
     result_dict = reduce(lambda a, b: {**a, **b}, list_of_dicts)
     return result_dict
 
-def oc_zip_cbg_lookup(cbg: str, oc_zip_codes: list[int], lookup_dict : dict[int,int]) -> int:
+def oc_zip_cbg_lookup(cbg: str, oc_zip_codes: List[int], lookup_dict : Dict[int,int]) -> int:
     '''
     Returns zip code if zip is in OC, otherwise returns 11111
     '''
