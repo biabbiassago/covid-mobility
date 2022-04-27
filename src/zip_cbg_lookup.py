@@ -35,7 +35,10 @@ def oc_zip_cbg_lookup(cbg: str, oc_zip_codes: List[int], lookup_dict : Dict[int,
     '''
     Returns zip code if zip is in OC, otherwise returns 11111
     '''
-    current = int(cbg[1:-1])
+    try :
+        current = int(cbg[1:-1])
+    except:
+        current = 0
     if lookup_dict.get(current):
         return lookup_dict.get(current)
     return 11111
@@ -46,7 +49,7 @@ def oc_zip_cbg_lookup(cbg: str, oc_zip_codes: List[int], lookup_dict : Dict[int,
 # GIVEN_CBG = "060590626143"
 
 # oc_zip_codes = get_oc_zips()
-# lookup_dict = lookup_dict(oc_zip_codes)
-# result_zip_code = oc_zip_cbg_lookup(GIVEN_CBG)
+# lookup_dict = make_lookup_dict(oc_zip_codes)
+# result_zip_code = oc_zip_cbg_lookup(GIVEN_CBG,oc_zip_codes,lookup_dict)
 
 

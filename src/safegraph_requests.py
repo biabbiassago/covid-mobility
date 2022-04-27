@@ -122,7 +122,7 @@ def patterns_resp_to_dataframe(
     for pk in placekey_list:
         query = make_patterns_query(pk, start_date, end_date)
         resp = make_safegraph_request(query)
-        if resp["data"]["lookup"]["weekly_patterns"]:
+        if resp.get("data",{}).get("lookup",{}).get("weekly_patterns"):
             dfs.append(
                 pd.json_normalize(
                     resp["data"]["lookup"]["weekly_patterns"],
@@ -139,7 +139,7 @@ def patterns_resp_to_dataframe(
 def make_safegraph_request(
     query: str,
     variables: Dict[str,Any] = None
-) -> Dict[Any]:
+) -> Dict[Any,Any]:
     
     headers = {
         'Content-Type': 'application/json',
@@ -164,10 +164,10 @@ def make_safegraph_request(
 # df = places_resp_to_dataframe(resp)
 
 
-START_DATE = "2020-03-01"
-END_DATE = "2020-12-31"
+# START_DATE = "2020-03-01"
+# END_DATE = "2020-12-31"
 
-query = make_places_query("92617")
-resp = make_safegraph_request(query)
-placekeys = get_placekey_list(resp)
-patterns = patterns_resp_to_dataframe(placekeys, START_DATE, END_DATE)
+# query = make_places_query("92617")
+# resp = make_safegraph_request(query)
+# placekeys = get_placekey_list(resp)
+# patterns = patterns_resp_to_dataframe(placekeys, START_DATE, END_DATE)
