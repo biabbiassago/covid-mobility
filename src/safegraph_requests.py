@@ -122,6 +122,7 @@ def patterns_resp_to_dataframe(
     for pk in placekey_list:
         query = make_patterns_query(pk, start_date, end_date)
         resp = make_safegraph_request(query)
+	print(resp)
         if resp.get("data",{}).get("lookup",{}).get("weekly_patterns"):
             dfs.append(
                 pd.json_normalize(
