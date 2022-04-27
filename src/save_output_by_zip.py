@@ -38,11 +38,11 @@ def main()-> None:
     placekeys = get_placekey_list(resp)
     patterns = patterns_resp_to_dataframe(placekeys,START_DATE, END_DATE)
 
-    if patterns:
+    if isinstance(patterns, pd.DataFrame):
         oc_zip_codes = get_oc_zips()
         lookup_dict = make_lookup_dict(oc_zip_codes)
-
         out_matrix = make_zip_out_visits(patterns, ZIP_CODE, oc_zip_codes,lookup_dict)
+        
     else:
         out_matrix = pd.DataFrame({"poi_zip": [11111],
                  "origin_zip":[11111],
