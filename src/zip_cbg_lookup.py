@@ -36,8 +36,8 @@ def oc_zip_cbg_lookup(cbg: str, oc_zip_codes: List[int], lookup_dict : Dict[int,
     Returns zip code if zip is in OC, otherwise returns 11111
     '''
     current = int(cbg[1:-1])
-    if z := lookup_dict.get(current):
-        return z
+    if lookup_dict.get(current):
+        return lookup_dict.get(current)
     return 11111
     
     
