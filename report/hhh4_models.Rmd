@@ -1,0 +1,120 @@
+---
+title: "Initial HHH4 Models: Meeting Notes"
+author: "Bianca Brusco"
+date: '2022-05-25'
+output: pdf_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(surveillance)
+```
+
+Summary and a few plots from the fitted models.
+
+## Model 1: no weights
+
+```{r noweights-fit, eval=FALSE, echo=TRUE}
+fit_noweights <-
+  surveillance::hhh4(oc_zip_covid)
+```
+
+```{r noweights}
+fit_noweights <- readRDS("outputs/hhh4_models/noweights.RDS")
+summary(fit_noweights)
+```
+
+Plots for the model:
+
+```{r noweights-plots, out.width = '70%', fig.show='hold',fig.align='center'}
+plot(fit_noweights)
+plot(fit_noweights, "map")
+```
+
+## Model 2: Sum Weights of Out Visits from Safegraph
+
+```{r sumweights-fit, eval=FALSE, echo=TRUE}
+sumweights_nb <- surveillance::hhh4(
+  oc_zip_covid,
+  control = list(
+    ne = list(
+      f = ~1,
+      weights = neighbourhood(oc_zip_covid),
+      family = "NegBin1",
+      normalize = TRUE
+    )
+  )
+)
+```
+
+```{r sumweights}
+sumweights_nb<- readRDS("outputs/hhh4_models/sumweights_nb.RDS")
+summary(sumweights_nb)
+```
+
+Plots for the model:
+
+```{r sumweights-plots, out.width = '70%',fig.show='hold',fig.align='center'}
+plot(sumweights_nb)
+plot(sumweights_nb, "map")
+```
+
+Can also specify with Poisson link?
+
+```{r sumweights-poi}
+sumweights_poi<- readRDS("outputs/hhh4_models/sumweights_poisson.RDS")
+summary(sumweights_poi)
+```
+
+## Model 3: Binary Neighbours Weights Matrix
+
+From Zip codes adjacency: 0 (not neighbours). 1 (neighbours).
+
+```{r binweights-fit, eval=FALSE, echo=TRUE}
+binweights_nb <- surveillance::hhh4(
+  oc_zip_covid,
+  control = list(
+    ne = list(
+      f = ~ 1,
+      weights = neighbourhood(oc_zip_covid),
+      family = "NegBin1",
+      normalize = TRUE
+    )
+  )
+)
+```
+
+```{r binweights}
+binweights_nb<- readRDS("outputs/hhh4_models/binweights_nb.RDS")
+summary(binweights_nb)
+```
+
+Plots for the model:
+
+```{r binweights-plots, out.width = '70%',fig.show='hold',fig.align='center'}
+plot(binweights_nb)
+plot(binweights_nb, "map")
+```
+
+```{r binweights-poi}
+binweights_poi<- readRDS("outputs/hhh4_models/binweights_poisson.RDS")
+summary(binweights_poi)
+```
+
+**Notes:**
+
+ - Having issues with interpretation of the models.
+
+ - Not all 85 ZIP Codes due to incongruence between the data files. To
+be resolved. Currently, these models are based on 74 zip codes.
+
+ - Questions:
+
+ - Visits from outside ZIP code have not been at all considered
+
+ - To do:
+
+ - Time varying weights

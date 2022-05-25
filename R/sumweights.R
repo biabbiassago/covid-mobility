@@ -1,4 +1,5 @@
 library(tidyverse)
+library(surveillance)
 source("R/utils.R")
 
 oc_df_long <- clean_cases_data()
