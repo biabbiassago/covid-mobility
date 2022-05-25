@@ -4,7 +4,7 @@ library(surveillance)
 #example from the package documentation
 data("measlesWeserEms")
 plot(measlesWeserEms)
-
+plot(measlesWeserEms@map)
 
 clean_cases_data <- function(){
   #try out on our dataset
@@ -17,7 +17,6 @@ clean_cases_data <- function(){
     pivot_wider(names_from = "zip",values_from="cases")
   return(oc_df_long)
 }
-
 
 #try out on our dataset
 oc_df <- read_csv("data/oc_covid_data_zip_weekly.csv")
@@ -81,6 +80,13 @@ plot(oc_hhh4)
 summary(oc_hhh4)
 
 
+install.packages("sp","rgdal")
+library("sp","rgdal")
 
 
-
+## EXAMPLE
+oc_zip <- readOGR( 
+  dsn= paste0(getwd(),"/data/shape-files/") , 
+  layer="Zipcode_boundary_scag_2009.sbn",
+  verbose=TRUE
+)

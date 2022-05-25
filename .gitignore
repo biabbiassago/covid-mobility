@@ -1,0 +1,10 @@
+src/__pycache__/
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdat
+.env
+*.Rproj
+*.ipynb_checkpoints/
+venv/
+/outputs/out_by_zip
