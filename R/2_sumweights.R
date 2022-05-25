@@ -67,7 +67,47 @@ oc_zip_covid <-
       neighbourhood = overall_weights
       )
 
-oc_hhh4_sum_weights <- surveillance::hhh4(oc_zip_covid)
+oc_hhh4_sum_weights <- surveillance::hhh4(
+  oc_zip_covid,
+  control=list(
+    weights=neighbourhood(oc_zip_covid))
+)
 plot(oc_hhh4_sum_weights)
 summary(oc_hhh4_sum_weights)
 saveRDS(oc_hhh4,"outputs/hhh4_models/sumweights.RDS")
+
+
+predict(
+  oc_hhh4_sum_weights,
+  oc_hhh4_sum_weights$control$subset
+)
+        
+
+oc_hhh4_sum_weights_nb <- surveillance::hhh4(
+  oc_zip_covid,
+  control=list(
+    weights=neighbourhood(oc_zip_covid),
+    family="NegBin1",
+    normalize=TRUE
+  )
+)
+summary(oc_hhh4_sum_weights_nb)
+
+
+oc_hhh4_sum_weights_ne <- surveillance::hhh4(
+  oc_zip_covid,
+  control=list(
+    ne=list(f=~1,weights=neighbourhood(oc_zip_covid)),
+    weights=neighbourhood(oc_zip_covid),
+    family="NegBin1",
+    normalize=TRUE
+  )
+)
+summary(oc_hhh4_sum_weights_ne)
+
+
+
+#Time-varying weights are possible by specifying an array
+#of dim() c(nUnits,nUnits,nTime), where nUnits=ncol(stsObj)
+#and nTime=nrow(stsObj).
+
