@@ -2,6 +2,7 @@ source("R/utils.R")
 
 library(spdep)
 library(tidyverse)
+library(surveillance)
 
 oc_df_long <- clean_cases_data()
 oc_cases <- reduced_cases_data()
@@ -30,6 +31,7 @@ oc_zip_covid <-
 hhh4_binweights_nb <- surveillance::hhh4(
   oc_zip_covid,
   control = list(
+    ar = list(f = ~1),
     ne = list(
       f = ~ 1,
       weights = neighbourhood(oc_zip_covid),
@@ -50,6 +52,7 @@ hhh4_binweights_poi <- surveillance::hhh4(
   oc_zip_covid,
   control = list(
     ne = list(
+      ar = list(f = ~1),
       f = ~ 1,
       weights = neighbourhood(oc_zip_covid),
       family = "Poisson",

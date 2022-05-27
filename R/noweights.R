@@ -18,7 +18,10 @@ oc_zip_covid <-
     map = sp_census_data
 )
 oc_hhh4 <-
-  surveillance::hhh4(oc_zip_covid)
+  surveillance::hhh4(
+    oc_zip_covid,
+    control= list(ar = list(f = ~1))
+  )
 
 plot(oc_hhh4)
 plot(oc_hhh4, "map")

@@ -62,13 +62,6 @@ plot(sumweights_nb)
 plot(sumweights_nb, "map")
 ```
 
-Can also specify with Poisson link?
-
-```{r sumweights-poi}
-sumweights_poi<- readRDS("outputs/hhh4_models/sumweights_poisson.RDS")
-summary(sumweights_poi)
-```
-
 ## Model 3: Binary Neighbours Weights Matrix
 
 From Zip codes adjacency: 0 (not neighbours). 1 (neighbours).
@@ -99,10 +92,6 @@ plot(binweights_nb)
 plot(binweights_nb, "map")
 ```
 
-```{r binweights-poi}
-binweights_poi<- readRDS("outputs/hhh4_models/binweights_poisson.RDS")
-summary(binweights_poi)
-```
 
 **Notes:**
 
@@ -110,10 +99,6 @@ summary(binweights_poi)
 
  - Not all 85 ZIP Codes due to incongruence between the data files. To
 be resolved. Currently, these models are based on 74 zip codes.
-
- - Questions:
-
- - Visits from outside ZIP code have not been at all considered
 
  - To do:
 

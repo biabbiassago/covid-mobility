@@ -56,6 +56,7 @@ oc_zip_covid <-
 hhh4_sumweights_poi <- surveillance::hhh4(
   oc_zip_covid,
   control = list(
+    ar = list(f = ~1),
     f = ~1,
     ne = list(weights = neighbourhood(oc_zip_covid)),
     family = "Poisson"
@@ -74,6 +75,7 @@ predict(
 hhh4_sumweights_nb <- surveillance::hhh4(
   oc_zip_covid,
   control = list(
+    ar = list(f = ~1),
     ne = list(
       f = ~1,
       weights = neighbourhood(oc_zip_covid),
