@@ -78,6 +78,43 @@ get_weights_row <- function(df) {
   return(row_weight)
 }
 
+## more helper functions to make the weights array matrix for time varying
+# helper function to make array creation easier.
+assign_week_number <- function(df){
+  tmp <- df %>%
+    group_by(origin_zip) %>%
+    filter(
+      (
+        date_range_start < "2021-12-20") &
+        (date_range_start > "2020-03-16")
+    ) %>%
+    mutate(
+      week = match(date_range_start, unique(date_range_start))
+    ) %>% 
+    ungroup() %>% 
+    filter(origin_zip %in% all_of(oc_zips_considered))
+  return(tmp)
+}
+
+get_weights_mat <- function(df,i) {
+  mat_weight <- df %>%
+    filter(week==i)%>% 
+    group_by(origin_zip) %>%
+    summarize(
+      poi_zip = first(poi_zip),
+      total_visits = sum(number_of_visits)
+    ) %>%
+    pivot_wider(
+      names_from = "origin_zip",
+      values_from = "total_visits"
+    )
+  return(mat_weight)
+}
+
+
+
+
+
 
 # get census data polygons
 # oc_census_data polygons
