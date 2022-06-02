@@ -1,3 +1,8 @@
+### TO DO:
+### FIGURE OUT ARRAY
+### COEFFICIENTS INTERPRETATION
+
+
 library(tidyverse)
 library(surveillance)
 source("R/utils.R")
@@ -29,13 +34,20 @@ for(i in 1:WEEKS_COUNT){
   weights_array[,,i] <- weekly_matrix
 }
 
+
+oc_red_matrix <- oc_df_long %>%
+  select(-colnames(.)[
+    !(colnames(.) %in% oc_zips_considered)
+  ])
+
+
 # Creating map object
 oc_census_data <- get_census_data()
 sp_census_data <- sf::as_Spatial(oc_census_data)
 
-oc_nb <- poly2nb(oc_census_data)
-binary_matrix <- nb2mat(neighbours = oc_nb, style = "B")
-row.names(binary_matrix) <- colnames(binary_matrix) <- oc_zips_considered
+#oc_nb <- poly2nb(oc_census_data)
+#binary_matrix <- nb2mat(neighbours = oc_nb, style = "B")
+#row.names(binary_matrix) <- colnames(binary_matrix) <- oc_zips_considered
 
 # sts object with time-varying weights
 oc_zip_covid <-
@@ -44,9 +56,10 @@ oc_zip_covid <-
     start = c(2020, 3 / 15),
     epoch = oc_df_long$start_date,
     frequency = 52,
-    neighbourhood = binary_matrix,
+    neighbourhood = weights_array,
     map = sp_census_data
   )
+
 # NOTE: sts object class does not take an array as an object for neighbourhood. Therefore,
 # the weighs array needs to be passed separately in the model as an stand-alone object.
 
