@@ -37,6 +37,7 @@ plot(fit_noweights, "map")
 ## Model 2: Sum Weights of Out Visits from Safegraph
 
 ```{r sumweights-fit, eval=FALSE, echo=TRUE}
+# oc zip covid in this case is an sts object with a weighted out visit matrix
 sumweights_nb <- surveillance::hhh4(
   oc_zip_covid,
   control = list(
@@ -56,17 +57,27 @@ summary(sumweights_nb)
 ```
 
 Plots for the model:
-
+ *Maps of the fitted component proportions averaged over all weeks*
+ 
 ```{r sumweights-plots, out.width = '70%',fig.show='hold',fig.align='center'}
 plot(sumweights_nb)
 plot(sumweights_nb, "map")
 ```
+
+
+Notes from documentation: 
+
+- " Note that we usually normalize the transmission weights such that
+$\sum_i w_{ji} = 1$, i.e., the $Yj,t-1$ cases are distributed among the regions proportionally to the $jth$ row vector of the weight matrix $wji$ ."
+
 
 ## Model 3: Binary Neighbours Weights Matrix
 
 From Zip codes adjacency: 0 (not neighbours). 1 (neighbours).
 
 ```{r binweights-fit, eval=FALSE, echo=TRUE}
+# oc zip covid in this case is an sts object with a neighbourhood binary matrix
+
 binweights_nb <- surveillance::hhh4(
   oc_zip_covid,
   control = list(
@@ -93,6 +104,14 @@ plot(binweights_nb, "map")
 ```
 
 
+## Model 4: Time-Varying Neighbours Weights Matrix (from Safegraph out visits)
+
+```{r tvweights}
+tvweights_nb<- readRDS("outputs/hhh4_models/timevaryingweights_nb.RDS")
+summary(tvweights_nb)
+```
+
+
 **Notes:**
 
  - Having issues with interpretation of the models.
@@ -100,6 +119,4 @@ plot(binweights_nb, "map")
  - Not all 85 ZIP Codes due to incongruence between the data files. To
 be resolved. Currently, these models are based on 74 zip codes.
 
- - To do:
 
- - Time varying weights
